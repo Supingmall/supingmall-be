@@ -28,7 +28,7 @@ public class ReviewEntity {
     private ProductEntity productEntity;
 
     @Column(name = "review_contents")
-    private Long reviewContents;
+    private String reviewContents;
 
     @Column(name = "create_at", nullable = false)
     private LocalDateTime createAt;

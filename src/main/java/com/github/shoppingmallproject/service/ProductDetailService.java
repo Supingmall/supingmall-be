@@ -34,7 +34,7 @@ public class ProductDetailService {
             public ProductDetailResponse getProductDetails(Integer productId) {
 
                 ProductEntity productEntity = productEntityJpaRepository.findById(productId)
-                        .orElseThrow(()->new NotFoundException("상품을 찾을 수 없습니다."));
+                        .orElseThrow( () -> new NotFoundException("상품을 찾을 수 없습니다."));
 
                 ProductDetailResponse productDetailResponse = ProductMapper.INSTANCE.productEntityToProductDetailResponse(productEntity);
                 List<ProductPhotoEntity> productPhotoEntities = productEntity.getProductPhotoEntities();
@@ -49,7 +49,9 @@ public class ProductDetailService {
                         })
                         .toList();
                 List<ProductPhoto> productPhotos =  productPhotoEntities.stream().map(pp->{
-                    return ProductPhoto.builder().photoUrl(pp.getPhotoUrl())
+                    return ProductPhoto.builder()
+                            .productPhotoId(pp.getProductPhotoId())
+                            .photoUrl(pp.getPhotoUrl())
                             .photoType(pp.getPhotoType())
                             .build();
                 }).toList();
@@ -60,6 +62,9 @@ public class ProductDetailService {
                 List<ProductReview> productReviews = reviewEntities.stream()
                         .map(re->{
                             return ProductReview.builder()
+                                    .reviewId(re.getReviewId())
+                                    .userId(re.getUserEntity().getUserId())
+                                    .productId(re.getProductEntity().getProductId())
                                     .score(re.getScore())
                                     .nickName(re.getUserEntity().getNickName())
                                     .reviewContents(re.getReviewContents())

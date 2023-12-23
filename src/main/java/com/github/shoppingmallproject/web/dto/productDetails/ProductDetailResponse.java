@@ -25,9 +25,9 @@ public class ProductDetailResponse {
     private String createAt;
     private String finishAt;
     // 별점 평균 대기
-    private Double scoreAvg;
-    private List<ProductPhotoEntity> productPhoto;
-    private List<ProductOptionEntity> productDetailList;
-    private List<ReviewEntity> productReview;
+    private Float scoreAvg;
+    private List<ProductPhoto> productPhoto;
+    private List<ProductDetailList> productDetailList;
+    private List<ProductReview> productReview;
 
 }

@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class ProductReview {
     private Integer reviewId;
     private Integer userId;
-    private String nickName;
     private Integer productId;
+    private String nickName;
     private String reviewContents;
     private LocalDateTime createAt;
     private Integer score;

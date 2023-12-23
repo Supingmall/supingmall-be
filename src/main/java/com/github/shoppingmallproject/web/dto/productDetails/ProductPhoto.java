@@ -13,7 +13,6 @@ import lombok.*;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ProductPhoto {
     private Integer productPhotoId;
-    private Integer productId;
     private String photoUrl;
     private Boolean photoType;
 }
