@@ -1,5 +1,6 @@
 package com.github.shoppingmallproject.repository.product;
 
+import com.github.shoppingmallproject.repository.productOption.ProductOptionEntity;
 import com.github.shoppingmallproject.repository.productPhoto.ProductPhotoEntity;
 import com.github.shoppingmallproject.repository.review.ReviewEntity;
 import com.github.shoppingmallproject.repository.users.UserEntity;
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter

@@ -27,6 +27,7 @@ import java.util.Map;
                 "com.github.shoppingmallproject.repository.userRoles",
                 "com.github.shoppingmallproject.repository.users",
                 "com.github.shoppingmallproject.repository.product",
+                "com.github.shoppingmallproject.repository.productOption",
                 "com.github.shoppingmallproject.repository.productPhoto",
                 "com.github.shoppingmallproject.repository.review"
         },
@@ -52,6 +53,7 @@ public class JpaConfig {
                 "com.github.shoppingmallproject.repository.userRoles",
                 "com.github.shoppingmallproject.repository.users",
                 "com.github.shoppingmallproject.repository.product",
+                "com.github.shoppingmallproject.repository.productOption",
                 "com.github.shoppingmallproject.repository.productPhoto",
                 "com.github.shoppingmallproject.repository.review"
         );
