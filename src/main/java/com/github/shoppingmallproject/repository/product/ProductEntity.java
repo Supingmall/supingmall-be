@@ -55,6 +55,20 @@ public class ProductEntity {
     @OneToMany(mappedBy = "productEntity")
     private List<ReviewEntity> reviewEntities;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity userEntity;
+
+    @OneToMany(mappedBy = "productEntity")
+    private List<ProductPhoto> productPhotos;
+    @OneToMany(mappedBy = "productEntity")
+    private List<ProductOption> productOptions;
+    @OneToMany(mappedBy = "product")
+    private List<ReviewEntitySihu> reviewEntitySihus;
+
+
+
+
     public enum Category {
         상의("상의"),
         하의("하의"),

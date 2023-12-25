@@ -6,6 +6,10 @@ datasource:
   jpa:
     show-sql: true
 
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 jwtpassword:
   source: ${JWT_CODE}
