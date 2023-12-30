@@ -4,12 +4,15 @@ import com.github.shoppingmallproject.repository.orderItem.OrderItemEntity;
 import com.github.shoppingmallproject.repository.users.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "order_table")
 public class OrderEntity {
 
@@ -20,12 +23,13 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userEntity;
+    public UserEntity userEntity;
 
     @Column(name = "order_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime orderAt;
 
-    @Column(name = "order_status", nullable = false, length = 10)
+    @Column(name = "order_status", nullable = false, length = 100)
     private String orderStatus;
 
     @Column(name = "ship", length = 255)
@@ -40,4 +44,15 @@ public class OrderEntity {
     @OneToMany(mappedBy = "orderTable")
     private List<OrderItemEntity> orderItemEntities;
 
+    public static OrderEntity createOrder(UserEntity user, List<OrderItemEntity> orderItems) {
+        OrderEntity order = new OrderEntity();
+        order.setUserEntity(user);
+        order.setOrderItemEntities(orderItems);
+        // 기타 필요한 초기화 작업 수행
+        return order;
+    }
+
+    public void setOrderRequest(String orderRequest) {
+        this.orderRequest = orderRequest;
+    }
 }
