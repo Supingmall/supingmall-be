@@ -17,10 +17,4 @@ public interface ProductOptionJpa extends JpaRepository<ProductOptionEntity, Int
             "ORDER BY p.productOptionId ASC ")
     List<SaleStatusEntity> findAllSalesStatus();
 
-//    @Query("SELECT poe " +
-//            "FROM ProductOptionEntity poe " +
-//            "JOIN FETCH poe.productEntity pe " +
-//            "JOIN FETCH ")
-//    ProductOptionEntity findByIdFetchJoin(Integer id);
-
 }

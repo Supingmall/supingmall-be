@@ -54,8 +54,6 @@ dependencies {
     //JSON
     implementation 'com.google.code.gson:gson:2.8.7'
 
-    implementation 'javax.persistence:javax.persistence-api:2.2' // 또는 현재 사용 중인 JPA 스펙 버전에 맞게 수정
-
 }
 
 tasks.named('test') {
