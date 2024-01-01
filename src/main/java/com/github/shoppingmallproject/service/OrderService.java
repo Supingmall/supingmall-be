@@ -2,150 +2,82 @@ package com.github.shoppingmallproject.service;
 
 import com.github.shoppingmallproject.repository.order.OrderEntity;
 import com.github.shoppingmallproject.repository.order.OrderJpa;
+import com.github.shoppingmallproject.repository.order.OrderProductOption;
 import com.github.shoppingmallproject.repository.orderItem.OrderItemEntity;
-import com.github.shoppingmallproject.repository.product.ProductEntity;
-import com.github.shoppingmallproject.repository.product.ProductJpa;
+import com.github.shoppingmallproject.repository.orderItem.OrderItemJpa;
 import com.github.shoppingmallproject.repository.productOption.ProductOptionEntity;
-import com.github.shoppingmallproject.repository.productPhoto.ProductPhotoEntity;
-import com.github.shoppingmallproject.repository.productPhoto.ProductPhotoJpa;
+import com.github.shoppingmallproject.repository.productOption.ProductOptionJpa;
+import com.github.shoppingmallproject.repository.userDetails.CustomUserDetails;
 import com.github.shoppingmallproject.repository.users.UserEntity;
 import com.github.shoppingmallproject.repository.users.UserJpa;
-import com.github.shoppingmallproject.web.dto.Order.OrderDto;
-import com.github.shoppingmallproject.web.dto.Order.OrderHistDto;
-import com.github.shoppingmallproject.web.dto.Order.OrderItemDto;
-import com.github.shoppingmallproject.web.dto.Order.UserDto;
-import javax.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
+import com.github.shoppingmallproject.service.exceptions.CustomBindException;
+import com.github.shoppingmallproject.service.exceptions.NotFoundException;
+import com.github.shoppingmallproject.service.mappers.OrderMapper;
+import com.github.shoppingmallproject.web.dto.OrderDTO2;
+import com.github.shoppingmallproject.web.dto.OrderItemDTO2;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class OrderService {
-
     private final OrderJpa orderJpa;
+    private final OrderItemJpa orderItemJpa;
+    private final ProductOptionJpa productOptionJpa;
     private final UserJpa userJpa;
-    private final ProductJpa productJpa;
-    private final ProductPhotoJpa productPhotoJpa;
 
-    // 주문을 위한 로직
-    public Integer order(OrderDto orderDto, String name) {
-        UserDto userDto = orderDto.getUser();
-        List<OrderItemDto> orderItemsDto = orderDto.getOrders();
+    @Transactional(transactionManager = "tm")
+    public boolean createOrder(CustomUserDetails customUserDetails, OrderDTO2 orderDTO2) {
+            List<OrderItemDTO2> orderItemDTO2s = orderDTO2.getOrderItemDTO2s();
+            List<OrderProductOption> orderProductOptions= new ArrayList<>();
 
-        UserEntity user = userJpa.findById(userDto.getId())
-                .orElseThrow(EntityNotFoundException::new);
+            for(OrderItemDTO2 orderItemDTO:orderItemDTO2s){
+                OrderProductOption orderProductOption = OrderProductOption.builder()
+                        .productOptionEntity(productOptionJpa.findById(orderItemDTO.getProductOptionId())
+                                .orElseThrow(()-> new NotFoundException("NFE","옵션 상품을 찾을 수 없습니다.",String.valueOf(orderItemDTO.getProductOptionId()))))
+                        .amount(orderItemDTO.getAmount())
+                        .build();
+                orderProductOptions.add(orderProductOption);
+            }
+            Integer totalPrice = null;
 
-        List<OrderItemEntity> orderItems = new ArrayList<>();
-        for (OrderItemDto orderItemDto : orderItemsDto) {
-            ProductEntity product = productJpa.findById(orderItemDto.getProductId())
-                    .orElseThrow(EntityNotFoundException::new);
+            for(OrderProductOption orderProductOption:orderProductOptions){
+                ProductOptionEntity productOptionEntity = orderProductOption.getProductOptionEntity();
+                Integer setStock = productOptionEntity.getStock()-orderProductOption.getAmount();
+                if(setStock<0) throw new CustomBindException("CBE",productOptionEntity.getProductEntity().getProductName()+", "
+                        +productOptionEntity.getColor()+", "+productOptionEntity.getProductSize()+" 의 재고가 구매수량 보다 적습니다.",
+                        "재고 : "+productOptionEntity.getStock() +" 구매 수량 : "+orderProductOption.getAmount());
+                productOptionEntity.setStock(setStock);
+                totalPrice = (totalPrice!=null)?totalPrice+productOptionEntity.getProductEntity().getProductPrice()*orderProductOption.getAmount()
+                        :productOptionEntity.getProductEntity().getProductPrice()*orderProductOption.getAmount();
+            }
+            UserEntity userEntity = userJpa.findByEmail(customUserDetails.getUsername());
 
-            ProductOptionEntity selectedOption = new ProductOptionEntity();
-            OrderItemEntity orderItem = OrderItemEntity.createOrderItem(product, selectedOption, orderItemDto.getStock());
-            orderItems.add(orderItem);
-        }
+            String recipient = (orderDTO2.getName()!=null)?orderDTO2.getName():customUserDetails.getUsername();
+            String deliveryAddress = (orderDTO2.getShip()!=null)?orderDTO2.getShip():customUserDetails.getAddress();
+            String orderRequest = orderDTO2.getOrderRequest();
 
-        OrderEntity order = OrderEntity.createOrder(user, orderItems);
-        order.setOrderRequest(userDto.getOrderRequest());
-        order.setOrderStatus("접수");
-        order.setOrderTotalPrice(calculateOrderTotalPrice(orderItems));
-        orderJpa.save(order);
+            orderDTO2.setShip(deliveryAddress);
+            orderDTO2.setName(recipient);
+            orderDTO2.setOrderRequest(orderRequest);
 
-        return order.getOrderId();
-    }
-
-    // 주문 아이템들의 가격을 합산하여 주문 총 가격 계산
-    public Integer calculateOrderTotalPrice(List<OrderItemEntity> orderItems) {
-
-        return orderItems.stream()
-                .mapToInt(OrderItemEntity::getOrderPrice)
-                .sum();
-    }
-
-    // 주문 목록을 조회하기 위한 로직
-    @Transactional
-    public List<OrderHistDto> getOrderList(String name) {
-        UserEntity user = userJpa.findByEmail(name);
-        List<OrderEntity> orders = orderJpa.findAllByUserEntityJoin(user);
-
-        List<OrderHistDto> orderHistDtos = new ArrayList<>();
-
-        for (OrderEntity order : orders) {
-            OrderHistDto orderHistDto = OrderHistDto.createOrderHistDto(order);
-            List<OrderItemEntity> orderItems = order.getOrderItemEntities();
-
-            for (OrderItemEntity orderItem : orderItems) {
-                ProductEntity productEntity = orderItem.getProductOptionEntity().getProductEntity();
-                ProductPhotoEntity productPhoto = getProductPhoto(productEntity);
-
-
-                if (productPhoto != null) {
-                    OrderItemDto orderItemDto = OrderItemDto.createOrderItemDto(orderItem);
-                    orderHistDto.addOrderItemDto(orderItemDto);
-                }
+            OrderEntity orderEntity = OrderMapper.INSTANCE.orderDTO2ToOrderEntity(orderDTO2, userEntity, totalPrice);
+            orderJpa.save(orderEntity);
+            for(OrderProductOption orderProductOption:orderProductOptions){
+                OrderItemEntity orderItemEntity = OrderItemEntity.builder()
+                        .orderTable(orderEntity)
+                        .productOptionEntity(orderProductOption.getProductOptionEntity())
+                        .itemAmount(orderProductOption.getAmount())
+                        .orderPrice(orderProductOption.getProductOptionEntity().getProductEntity().getProductPrice())
+                        .build();
+                orderItemJpa.save(orderItemEntity);
             }
 
-            orderHistDtos.add(orderHistDto);
-        }
-
-        return orderHistDtos;
+            return true;
     }
 
-    private ProductPhotoEntity getProductPhoto(ProductEntity productEntity) {
-
-        return productPhotoJpa.findByProductEntity(productEntity);
-    }
-
-    // DB에 있는 email과 주문자 email 대조함
-    @Transactional
-    public boolean validateOrder(Integer orderId, String email) {
-        UserEntity curUser = userJpa.findByEmail(email);
-        OrderEntity order = orderJpa.findById(orderId)
-                .orElseThrow(EntityNotFoundException::new);
-        UserEntity savedUser = order.getUserEntity();
-
-        return StringUtils.equals(curUser.getEmail(), savedUser.getEmail());
-    }
-
-//    // 주문 취소하는 로직 구현 service
-//    public void cancelOrder(Integer orderId) {
-//        OrderEntity order = orderJpa.findById(orderId)
-//                .orElseThrow(EntityNotFoundException::new);
-//        order.cancelOrder();
-//    }
-
-    // 장바구니에서 주문할 상품 데이터를 전달받아서 주문 생성
-    public Integer orders(List<OrderDto> orderDtoList, String email) {
-        UserEntity user = userJpa.findByEmail(email);
-        List<OrderItemEntity> orderItemList = new ArrayList<>();
-
-        // 주문할 상품 리스트
-        for (OrderDto orderDto : orderDtoList) {
-            List<OrderItemDto> orderItemsDto = orderDto.getOrders();
-
-            for (OrderItemDto orderItemDto : orderItemsDto) {
-                ProductEntity product = productJpa.findById(orderItemDto.getId())
-                        .orElseThrow(EntityNotFoundException::new);
-
-                ProductOptionEntity selectedOption = new ProductOptionEntity();
-                OrderItemEntity orderItem = OrderItemEntity.createOrderItem(product, selectedOption,orderItemDto.getStock());
-                orderItemList.add(orderItem);
-            }
-        }
-
-        OrderEntity order = OrderEntity.createOrder(user, orderItemList);
-        orderJpa.save(order);
-
-        if (order.getOrderRequest() == null) {
-            System.out.println("DEBUG: orderRequest is null");
-        }
-
-        return order.getOrderId();
-    }
 }
