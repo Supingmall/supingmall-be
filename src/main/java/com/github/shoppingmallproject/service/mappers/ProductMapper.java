@@ -39,7 +39,7 @@ public interface ProductMapper {
     ProductPhotoEntity PhotoDTOToProductPhotoEntity(PhotoDTO photoDTO);
 
     default LocalDateTime strToTimeFormat(String finishAt){
-            return LocalDateTime.parse(finishAt, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            return LocalDateTime.parse(finishAt+" 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
     default String formatting(LocalDateTime localDateTime){
         if( localDateTime != null ){
