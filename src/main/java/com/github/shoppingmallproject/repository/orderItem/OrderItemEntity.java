@@ -2,6 +2,7 @@ package com.github.shoppingmallproject.repository.orderItem;
 
 
 import com.github.shoppingmallproject.repository.order.OrderEntity;
+import com.github.shoppingmallproject.repository.product.ProductEntity;
 import com.github.shoppingmallproject.repository.productOption.ProductOptionEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,5 @@ public class OrderItemEntity {
 
     @Column(name = "order_price", nullable = false)
     private Integer orderPrice;
-
 
 }

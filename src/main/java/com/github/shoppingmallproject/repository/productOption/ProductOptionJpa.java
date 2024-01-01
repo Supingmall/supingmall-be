@@ -1,7 +1,6 @@
 package com.github.shoppingmallproject.repository.productOption;
 
 import com.github.shoppingmallproject.repository.product.SaleStatusEntity;
-import com.github.shoppingmallproject.web.dto.SalesStatusDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,11 +16,5 @@ public interface ProductOptionJpa extends JpaRepository<ProductOptionEntity, Int
             "GROUP BY p.productOptionId " +
             "ORDER BY p.productOptionId ASC ")
     List<SaleStatusEntity> findAllSalesStatus();
-
-//    @Query("SELECT poe " +
-//            "FROM ProductOptionEntity poe " +
-//            "JOIN FETCH poe.productEntity pe " +
-//            "JOIN FETCH ")
-//    ProductOptionEntity findByIdFetchJoin(Integer id);
 
 }

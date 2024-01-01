@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService2 {
+public class OrderService {
     private final OrderJpa orderJpa;
     private final OrderItemJpa orderItemJpa;
     private final ProductOptionJpa productOptionJpa;
