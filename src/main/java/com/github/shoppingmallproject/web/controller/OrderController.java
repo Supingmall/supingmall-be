@@ -1,11 +1,24 @@
-//package com.github.shoppingmallproject.web.controller;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//@RequiredArgsConstructor
-//@RestController
-//@RequestMapping("http://localhost:8080/v1/api/account/my-page/order-history")
-//public class OrderController {
-//}
+package com.github.shoppingmallproject.web.controller;
+
+import com.github.shoppingmallproject.repository.userDetails.CustomUserDetails;
+import com.github.shoppingmallproject.service.OrderService;
+import com.github.shoppingmallproject.web.dto.OrderDTO2;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/v1/api/account")
+@RequiredArgsConstructor
+public class OrderController {
+    private final OrderService orderService;
+
+    @PostMapping("/orders")
+    public boolean createOrder(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody OrderDTO2 orderDTO2){
+        return orderService.createOrder(customUserDetails, orderDTO2);
+    }
+
+}
