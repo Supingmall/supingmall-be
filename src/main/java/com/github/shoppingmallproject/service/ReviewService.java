@@ -73,7 +73,7 @@ public class ReviewService {
 
         if (userEntity != null) {
             Optional<ProductEntity> productEntity = Optional.ofNullable(productJpa.findById(productId)
-                    .orElseThrow(() -> new NotFoundException("유효하지 않은 상품번호입니다.")));
+                    .orElseThrow(() -> new NotFoundException("E", "유효하지 않은 상품번호입니다.", Integer.toString(productId))));
 
             reviewJpa.save(
                     ReviewEntity.builder()
@@ -108,7 +108,7 @@ public class ReviewService {
 
         if (userEntity != null) {
             Optional<ReviewEntity> getReview = Optional.ofNullable(reviewJpa.findById(reviewId)
-                    .orElseThrow(() -> new NotFoundException("유효하지 않은 리뷰번호입니다.")));
+                    .orElseThrow(() -> new NotFoundException("E", "유효하지 않은 리뷰번호입니다.", Integer.toString(reviewId))));
 
             if (getReview.isPresent()) {
                 ReviewEntity review = getReview.get();
