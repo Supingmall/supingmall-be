@@ -1,16 +1,25 @@
-#name: GitHub Actions public
-#run-name: ${{ github.actor }} is testing out play
-#on:
-#  push:
-#    branches:
-#      - main
-#  pull_request:
-#    branches:
-#      - develop
-#jobs:
-#  Explore-GitHub-Actions:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: 배포 스크립트 실행
-#        run: |
-#          ../../bepo.sh
+name: Deploy on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and deploy
+        run: |
+          cd /home/ubuntu/spring/supingmall-be
+          ./bepo.sh
