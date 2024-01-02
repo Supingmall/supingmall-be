@@ -88,11 +88,11 @@ public class AccountService {
         }
 
         if(userJpa.existsByEmailAndEmailNot(email, loggedEmail)){
-            throw new DuplicateKeyException(email, "이메일로");
-        }else if(userJpa.existsByPhoneNumberAndEmailNot(email, loggedEmail)) {
-            throw new DuplicateKeyException(phoneNumber, "핸드폰 번호로");
-        }else if(userJpa.existsByNickNameAndEmailNot(email, loggedEmail)){
-            throw new DuplicateKeyException(nickName, "닉네임으로");
+            throw new DuplicateKeyException("DKE","이미 입력하신 "+email+" 이메일로 가입된 계정이 있습니다.",email);
+        }else if(userJpa.existsByPhoneNumberAndEmailNot(phoneNumber, loggedEmail)) {
+            throw new DuplicateKeyException("DKE","이미 입력하신 "+phoneNumber+" 핸드폰 번호로 가입된 계정이 있습니다.",phoneNumber);
+        }else if(userJpa.existsByNickNameAndEmailNot(nickName, loggedEmail)){
+            throw new DuplicateKeyException("DKE","이미 입력하신 "+nickName+" 닉네임으로 가입된 계정이 있습니다.",nickName);
         }
 
 
@@ -101,7 +101,7 @@ public class AccountService {
 //                .map(rn->rolesJpa.findByName(rn)).toList();//롤변경시 필요
         UserEntity updateUser = UserMapper.INSTANCE.AccountDTOToUserEntity(accountDTO);
 
-        if(accountDTO.getPassword()==null) throw new CustomBindException("현재 비밀번호를 입력해 주세요.");
+        if(accountDTO.getPassword()==null) throw new CustomBindException("CBE","현재 비밀번호를 입력해 주세요.",null);
 
 
         if(passwordEncoder.matches(accountDTO.getPassword(), customUserDetails.getPassword())){
@@ -146,7 +146,7 @@ public class AccountService {
                 ()->new NotFoundException("계정을 찾을 수 없습니다. 다시 로그인 해주세요.")
         );
         if(userEntity.getStatus().equals("delete")){
-            throw new DuplicateKeyException("이미 탈퇴처리된 회원 입니다.");
+            throw new CustomBindException("CBE","이미 탈퇴처리된 회원 입니다.",null);
         }
         userEntity.setStatus("delete");
         userEntity.setDeletionDate(LocalDateTime.now());
@@ -164,7 +164,7 @@ public class AccountService {
                 .map(ur->ur.getRoles()).toList();
         Roles roles = rolesJpa.findByName("ROLE_SUPERUSER");
 
-        if(userRoles.contains(roles)) throw new DuplicateKeyException("이미 "+roles.getName()+"의 권한을 갖고 있습니다.");
+        if(userRoles.contains(roles)) throw new DuplicateKeyException("DKE","이미 "+roles.getName()+"의 권한을 갖고 있습니다.","ROLE_SUPERUSER");
 
         userRolesJpa.save(UserRoles.builder()
                 .roles(roles)

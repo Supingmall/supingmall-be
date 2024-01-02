@@ -15,11 +15,11 @@ public class ExceptionController {
 
     @GetMapping(value = "/entrypoint")
     public void entrypointException() {
-        throw new NotAcceptException( "로그인이 필요합니다.");
+        throw new NotAcceptException("NAE" ,"로그인이 필요합니다.",null);
     }
 
     @GetMapping(value = "/access-denied")
     public void accessDeniedException() {
-        throw new AccessDenied("권한이 없습니다.");
+        throw new AccessDenied("AD","권한이 없습니다.",null);
     }
 }
