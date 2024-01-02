@@ -56,11 +56,11 @@ public class SignUpLoginService {
         }
 
         if(userJpa.existsByEmail(signUpRequest.getEmail())){
-            throw new DuplicateKeyException( signUpRequest.getEmail(), "이메일로");
+            throw new DuplicateKeyException("DKE","이미 입력하신 "+signUpRequest.getEmail()+" 이메일로 가입된 계정이 있습니다.",signUpRequest.getEmail());
         }else if(userJpa.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
-            throw new DuplicateKeyException( signUpRequest.getPhoneNumber(), "핸드폰 번호로");
+            throw new DuplicateKeyException("DKE","이미 입력하신 "+signUpRequest.getPhoneNumber()+" 핸드폰 번호로 가입된 계정이 있습니다.",signUpRequest.getPhoneNumber());
         }else if(userJpa.existsByNickName(signUpRequest.getNickName())){
-            throw new DuplicateKeyException( signUpRequest.getNickName(), "닉네임으로");
+            throw new DuplicateKeyException("DKE","이미 입력하신 "+signUpRequest.getNickName()+" 닉네임으로 가입된 계정이 있습니다.",signUpRequest.getNickName());
         }
         else if(!password.matches("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]+$")
                 ||!(password.length()>=8&&password.length()<=20)
@@ -110,7 +110,7 @@ public class SignUpLoginService {
 
         try{
             if(userEntity.getStatus().equals("delete")){
-                throw new AccessDenied("탈퇴한 계정입니다. 재가입 하시겠습니까? (ex 유저 정보들고 회원가입 리다이렉션 )");
+                throw new AccessDenied("AD","탈퇴한 계정입니다.",emailOrPhoneNumber);
             }
 
             if(userEntity.getStatus().equals("lock")){
@@ -146,7 +146,7 @@ public class SignUpLoginService {
 
     public boolean checkEmail(String email) {
         if (!email.matches(".+@.+\\..+")) {
-            throw new CustomBindException("이메일을 정확히 입력해주세요.");
+            throw new CustomBindException("CBE","이메일을 정확히 입력해주세요.",email);
         }
         return !userJpa.existsByEmail(email);
     }
