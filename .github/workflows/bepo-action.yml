@@ -1,16 +1,16 @@
-name: GitHub Actions public
-run-name: ${{ github.actor }} is testing out play
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - develop
-jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 배포 스크립트 실행
-        run: |
-          ../../bepo.sh
+#name: GitHub Actions public
+#run-name: ${{ github.actor }} is testing out play
+#on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - develop
+#jobs:
+#  Explore-GitHub-Actions:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: 배포 스크립트 실행
+#        run: |
+#          ../../bepo.sh
