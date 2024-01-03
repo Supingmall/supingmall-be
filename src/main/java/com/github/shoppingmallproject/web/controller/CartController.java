@@ -22,7 +22,6 @@ public class CartController {
         List<CartDTO> cartDTOS = cartService.findAllCart();
         return cartDTOS;
     }
-
     // 장바구니 담기
     @PostMapping("/cart")
     public AddToCartResponse addToCart(
