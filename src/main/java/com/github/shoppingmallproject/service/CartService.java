@@ -11,6 +11,7 @@ import com.github.shoppingmallproject.service.exceptions.NotFoundException;
 import com.github.shoppingmallproject.service.mappers.CartMapper;
 import com.github.shoppingmallproject.web.dto.cart.AddToCartResponse;
 import com.github.shoppingmallproject.web.dto.cart.CartDTO;
+import com.github.shoppingmallproject.web.dto.product.CartAdd;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,7 +81,9 @@ public class CartService {
 //    }
 
     // 장바구니 담기 ( 중복된 코드 생략 )
-    public AddToCartResponse addToCart(CustomUserDetails customUserDetails, Integer productOptionId, Integer addAmount) {
+    public AddToCartResponse addToCart(CustomUserDetails customUserDetails, CartAdd cartAdd) {
+        Integer productOptionId = cartAdd.getProductOptionId();
+        Integer addAmount  = cartAdd.getAddAmount();
         UserEntity userEntity = userJpa.findByEmail(customUserDetails.getUsername());
 
         ProductOptionEntity productOptionEntity = productOptionJpa.findById(productOptionId)

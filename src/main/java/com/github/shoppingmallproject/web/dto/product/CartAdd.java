@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CartAdd {
-    private Integer productId;
-    private String color;
-    private String product_size;
-    private Integer quantity;
+    private Integer productOptionId;
+    private Integer addAmount;
 }
