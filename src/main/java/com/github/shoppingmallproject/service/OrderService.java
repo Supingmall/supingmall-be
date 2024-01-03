@@ -5,6 +5,8 @@ import com.github.shoppingmallproject.repository.order.OrderJpa;
 import com.github.shoppingmallproject.repository.order.OrderProductOption;
 import com.github.shoppingmallproject.repository.orderItem.OrderItemEntity;
 import com.github.shoppingmallproject.repository.orderItem.OrderItemJpa;
+import com.github.shoppingmallproject.repository.product.ProductEntity;
+import com.github.shoppingmallproject.repository.product.ProductJpa;
 import com.github.shoppingmallproject.repository.productOption.ProductOptionEntity;
 import com.github.shoppingmallproject.repository.productOption.ProductOptionJpa;
 import com.github.shoppingmallproject.repository.userDetails.CustomUserDetails;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class OrderService {
     private final OrderJpa orderJpa;
     private final OrderItemJpa orderItemJpa;
     private final ProductOptionJpa productOptionJpa;
+    private final ProductJpa productJpa;
     private final UserJpa userJpa;
 
     @Transactional(transactionManager = "tm")
@@ -47,11 +51,20 @@ public class OrderService {
 
             for(OrderProductOption orderProductOption:orderProductOptions){
                 ProductOptionEntity productOptionEntity = orderProductOption.getProductOptionEntity();
+                if(productOptionEntity.getProductEntity().getProductStatus().equals("판매종료")){
+                    throw new CustomBindException("CBE","판매가 종료된 상품 입니다.", productOptionEntity.getProductEntity().getProductName());
+                }
                 Integer setStock = productOptionEntity.getStock()-orderProductOption.getAmount();
                 if(setStock<0) throw new CustomBindException("CBE",productOptionEntity.getProductEntity().getProductName()+", "
                         +productOptionEntity.getColor()+", "+productOptionEntity.getProductSize()+" 의 재고가 구매수량 보다 적습니다.",
                         "재고 : "+productOptionEntity.getStock() +" 구매 수량 : "+orderProductOption.getAmount());
                 productOptionEntity.setStock(setStock);
+
+                if(setStock==0){
+                    List<ProductOptionEntity> sameProduct = productOptionEntity.getProductEntity().getProductOptionEntities();
+                    boolean allStock = sameProduct.stream().allMatch(poe->poe.getStock()==0);
+                    if(allStock) productOptionEntity.getProductEntity().setProductStatus("판매종료");
+                }
                 totalPrice = (totalPrice!=null)?totalPrice+productOptionEntity.getProductEntity().getProductPrice()*orderProductOption.getAmount()
                         :productOptionEntity.getProductEntity().getProductPrice()*orderProductOption.getAmount();
             }

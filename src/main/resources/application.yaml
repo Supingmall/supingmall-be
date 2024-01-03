@@ -20,6 +20,9 @@ jwtpassword:
 logging:
   level:
     org.hibernate.SQL: debug
+    org:
+      springframework:
+        transaction.interceptor: TRACE
 
 kakao:
   grant_type: authorization_code
