@@ -1,5 +1,6 @@
 package com.github.shoppingmallproject.repository.users;
 
+import com.github.shoppingmallproject.repository.review.ReviewEntity;
 import com.github.shoppingmallproject.repository.userRoles.UserRoles;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -55,5 +57,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity")
     private Collection<UserRoles> userRoles;
+    @OneToMany(mappedBy = "userEntity")
+    private List<ReviewEntity> reviewEntities;
 
 }

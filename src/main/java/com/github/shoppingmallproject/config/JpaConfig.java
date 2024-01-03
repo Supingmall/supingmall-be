@@ -1,7 +1,9 @@
 package com.github.shoppingmallproject.config;
 
 import com.github.shoppingmallproject.config.properties.DataSourceProperties;
+import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Qualifier;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -75,8 +78,12 @@ public class JpaConfig {
 
         return lemfb;
     }
+//    @Bean(name = "tm")
+//    public PlatformTransactionManager platformTransactionManager() {
+//        return new DataSourceTransactionManager(dataSource());
+//    }
     @Bean(name = "tm")
-    public PlatformTransactionManager platformTransactionManager() {
-        return new DataSourceTransactionManager(dataSource());
+    public PlatformTransactionManager platformTransactionManager(EntityManagerFactory entityManagerFactory) {
+         return new JpaTransactionManager(entityManagerFactory);
     }
 }
