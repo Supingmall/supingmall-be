@@ -1,7 +1,8 @@
 #!/bin/bash
 
-git pull origin feature-sihu-test
 cd /home/ubuntu/spring/supingmall-be
+
+git pull origin feature-sihu-test
 
 OLD_PID=$(pgrep -f "java -jar ./build/libs/shopping-mall-project-0.0.1-SNAPSHOT.jar")
 if [ -n "$OLD_PID" ]; then
