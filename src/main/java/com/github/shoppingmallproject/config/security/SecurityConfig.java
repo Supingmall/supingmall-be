@@ -55,7 +55,7 @@ public class SecurityConfig {
                             a
                                     .requestMatchers("v1/api/admin/my-page/*").hasRole("ADMIN")
                                     .requestMatchers("/v1/admin/**", "/v1/api/account/set-super-user","/v1/api/customer/*").hasAnyRole("ADMIN","SUPERUSER")
-                                    .requestMatchers("/v1/api/account/test2").permitAll()
+                                    .requestMatchers("/v1/api/account/test").permitAll()
                                     .requestMatchers("/v1/api/user/logout", "/v1/api/account/**", "/v1/api/review/**").hasAnyRole("ADMIN", "SUPERUSER", "USER")
                                     .requestMatchers("/resources/static/**", "/v1/api/auth/*",  "/v1/api/product/*").permitAll()
 
