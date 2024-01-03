@@ -22,5 +22,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
+      - name: testDied
+        run: chmod +x scriptt/bepo.sh
       - name: test
         run: ./scriptt/bepo.sh
