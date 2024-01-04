@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/spring/supingmall-be
+    destination: /home/ubuntu/sihu/test
     overwrite: yes
 
 permissions:

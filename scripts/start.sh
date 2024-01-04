@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PROJECT_ROOT="/home/ubuntu/spring/supingmall-be"
-JAR_FILE="/home/ubuntu/spring/supingmall-be/build/libs/shopping-mall-project-0.0.1-SNAPSHOT.jar"
+PROJECT_ROOT="/home/ubuntu/sihu/test"
+JAR_FILE="/home/ubuntu/sihu/test/build/libs/shopping-mall-project-0.0.1-SNAPSHOT.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
