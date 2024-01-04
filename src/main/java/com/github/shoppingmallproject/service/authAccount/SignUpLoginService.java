@@ -69,6 +69,7 @@ public class SignUpLoginService {
         }
 
 
+
         signUpRequest.setPassword(passwordEncoder.encode(password));
 
         Roles roles = rolesJpa.findByName("ROLE_USER");
