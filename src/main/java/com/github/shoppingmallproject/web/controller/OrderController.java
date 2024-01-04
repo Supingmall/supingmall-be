@@ -23,7 +23,6 @@ public class OrderController {
         return orderService.createOrder(customUserDetails, orderDTO2);
     }
 
-
     @PostMapping("/test")
     public String testOrder(){
         scheduleService.setupOldProduct();
