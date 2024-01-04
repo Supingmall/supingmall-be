@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_ROOT="/home/ubuntu/sihu/test"
-JAR_FILE="/home/ubuntu/sihu/test/build/libs/shopping-mall-project-0.0.1-SNAPSHOT.jar"
+JAR_FILE="/home/ubuntu/sihu/test/build/libs/원하는파일명.jar"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
