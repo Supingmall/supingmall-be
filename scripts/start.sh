@@ -7,6 +7,11 @@ APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
+# 직접 환경 변수 값을 할당
+DATABASE_USERNAME="root"
+DATABASE_PASSWORD="12341234"
+JWT_CODE="cheerupBE2"
+
 TIME_NOW=$(date +%c)
 
 echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
