@@ -2,6 +2,16 @@
 
 # .code.env 파일 읽기
 if [ -f ~/code.env ]; then
+  echo "File exists: ~/code.env"
+  source ~/code.env
+  echo "File sourced successfully."
+else
+  echo "File not found: ~/code.env"
+fi
+
+
+# .code.env 파일 읽기
+if [ -f ~/code.env ]; then
   export $(cat ~/code.env | xargs)
 fi
 
