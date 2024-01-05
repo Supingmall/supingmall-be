@@ -35,7 +35,6 @@ public class ScheduleService {
         TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 
-
         try{
         List<ProductEntity> productEntities = productJpa.findAll();
         List<ProductEntity> oldProducts = productEntities.stream()
