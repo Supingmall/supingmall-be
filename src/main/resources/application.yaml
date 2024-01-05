@@ -10,17 +10,9 @@ dependencies:
   kakao_flutter_sdk_user: ^1.8.0 # 카카오 로그인
 
 spring:
-  config:
-    activate:
-      on-profile: dev
-    # aws-parameterstore: 추가
-    import: 'aws-parameterstore:'
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-aws:
-  paramstore:
-    name: docswant
 
 jwtpassword:
   source: ${JWT_CODE}
