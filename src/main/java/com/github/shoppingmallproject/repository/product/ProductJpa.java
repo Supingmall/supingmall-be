@@ -42,5 +42,5 @@ public interface ProductJpa extends JpaRepository<ProductEntity, Integer> {
             "ORDER BY p.productId ASC "
     )
     Page<ProductJoinPhotoAndReview> findByKeywordByStatusAndPhotoType(String productStatus, String keyword, Pageable pageable);
-    
+
 }

@@ -40,7 +40,7 @@ public interface UserMapper {
         }else return null;
     }
     default String setDefault(String imageUrl){
-        return imageUrl==null ? "url" : imageUrl;
+        return imageUrl==null ? "https://static.thenounproject.com/png/3070444-200.png" : imageUrl;
     }
 
     default List<String> rolesMapper(UserEntity userEntity){

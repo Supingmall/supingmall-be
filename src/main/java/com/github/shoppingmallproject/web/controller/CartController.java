@@ -4,6 +4,7 @@ import com.github.shoppingmallproject.repository.userDetails.CustomUserDetails;
 import com.github.shoppingmallproject.service.CartService;
 import com.github.shoppingmallproject.web.dto.cart.AddToCartResponse;
 import com.github.shoppingmallproject.web.dto.cart.CartDTO;
+import com.github.shoppingmallproject.web.dto.product.CartAdd;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +28,9 @@ public class CartController {
     @PostMapping("/cart")
     public AddToCartResponse addToCart(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestParam Integer productOptionId,
-            @RequestParam Integer addAmount
+            @RequestBody CartAdd cartAdd
             ){
-        return cartService.addToCart(customUserDetails, productOptionId, addAmount);
+        return cartService.addToCart(customUserDetails, cartAdd);
     }
 
 }
