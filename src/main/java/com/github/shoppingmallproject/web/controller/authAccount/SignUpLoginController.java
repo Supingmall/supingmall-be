@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SignUpLoginController {
     private final SignUpLoginService signUpLoginService;
-    @GetMapping("/test5")
+    @GetMapping("/test6")
     public String test(){
         return "성공";
     }
