@@ -15,6 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SignUpLoginController {
     private final SignUpLoginService signUpLoginService;
+    @GetMapping("/test5")
+    public String test(){
+        return "성공";
+    }
     @PostMapping("/sign-up")
     public String signUp(@RequestBody SignUpRequest signUpRequest){
         return signUpLoginService.signUp(signUpRequest);

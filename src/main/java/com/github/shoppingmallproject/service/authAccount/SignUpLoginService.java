@@ -35,6 +35,7 @@ public class SignUpLoginService {
     private final UserRolesJpa userRolesJpa;
     private final JwtTokenConfig jwtTokenConfig;
 
+
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
@@ -67,6 +68,7 @@ public class SignUpLoginService {
         ){
             throw new CustomBindException("CBE","비밀번호는 8자 이상 20자 이하 숫자와 영문자 조합 이어야 합니다.",password);
         }
+
 
 
         signUpRequest.setPassword(passwordEncoder.encode(password));
