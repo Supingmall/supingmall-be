@@ -15,7 +15,16 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'io.awspring.cloud:spring-cloud-aws-dependencies:2.3.3'
+    }
+}
+
 dependencies {
+    //parameter store
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws-parameter-store-config'
+
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.jetbrains:annotations:24.0.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
