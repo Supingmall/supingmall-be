@@ -35,6 +35,7 @@ public class SignUpLoginService {
     private final UserRolesJpa userRolesJpa;
     private final JwtTokenConfig jwtTokenConfig;
 
+
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
