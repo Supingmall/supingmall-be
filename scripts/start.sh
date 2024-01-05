@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_ROOT="/home/ubuntu/sihu/springBest"
-JAR_FILE="/home/ubuntu/sihu/springBest/build/libs/spring.jar"
+JAR_FILE="/home/ubuntu/sihu/springBest/susu/spring.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
