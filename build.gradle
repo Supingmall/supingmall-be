@@ -64,7 +64,8 @@ tasks.named('test') {
 
 tasks.named('bootJar'){
     mainClass = 'com.github.shoppingmallproject.ShoppingMallProjectApplication'
+    destinationDirectory = file("./susu")
     archivesBaseName = '프로젝트이름'
-    archiveFileName = '원하는파일명.jar'
+    archiveFileName = 'spring.jar'
     archiveVersion = "0.0.3"
 }
