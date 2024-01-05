@@ -47,7 +47,6 @@ public class SignUpLoginService {
         String phoneNumber = signUpRequest.getPhoneNumber();
         String password = signUpRequest.getPassword();
 
-
         if(!email.matches(".+@.+\\..+")){
             throw new CustomBindException("CBE","이메일을 정확히 입력해주세요.",email);
         } else if (!phoneNumber.matches("01\\d{9}")) {
