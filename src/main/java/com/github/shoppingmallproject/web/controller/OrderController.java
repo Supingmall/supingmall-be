@@ -22,6 +22,8 @@ public class OrderController {
     public boolean createOrder(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody OrderDTO2 orderDTO2){
         return orderService.createOrder(customUserDetails, orderDTO2);
     }
+
+
     @PostMapping("/test")
     public String testOrder(){
         scheduleService.setupOldProduct();
