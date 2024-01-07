@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_ROOT="/home/ubuntu/sihu/springBest"
-JAR_FILE="/home/ubuntu/sihu/springBest/susu/spring.jar"
+JAR_FILE="/home/ubuntu/sihu/springBest/playjar/playtest.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
@@ -15,7 +15,7 @@ export JWT_CODE="cheerupBE2"
 TIME_NOW=$(date +%c)
 
 echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
-cp $PROJECT_ROOT/susu/*.jar $JAR_FILE
+cp $PROJECT_ROOT/buildtest/*.jar $JAR_FILE
 
 #codedeploy bashrc를 읽어오지 못해 해당 파일 로드하게 작업
 #source ~/.bash_profile
