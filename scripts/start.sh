@@ -8,7 +8,7 @@ ERROR_LOG="$PROJECT_ROOT/error.log"
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
 # 소스하는 부분
-source  ~/env_variables.sh
+source  /home/ubuntu/env_variables.sh
 
 TIME_NOW=$(date +%c)
 
