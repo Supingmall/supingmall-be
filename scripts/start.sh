@@ -6,10 +6,9 @@ JAR_FILE="/home/ubuntu/sihu/springBest/playjar/playtest.jar"
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
-# 직접 환경 변수 설정
-export DATABASE_USERNAME="root"
-export DATABASE_PASSWORD="12341234"
-export JWT_CODE="cheerupBE2"
+
+# 소스하는 부분
+source  ~/env_variables.sh
 
 TIME_NOW=$(date +%c)
 
