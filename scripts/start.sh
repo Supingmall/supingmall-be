@@ -14,6 +14,9 @@ export JWT_CODE="cheerupBE2"
 TIME_NOW=$(date +%c)
 
 echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
+if [ ! -d /home/ubuntu/sihu/springBest/playjar ]; then
+    mkdir -p /home/ubuntu/sihu/springBest/playjar
+fi
 cp $PROJECT_ROOT/buildtest/*.jar $JAR_FILE
 
 #codedeploy bashrc를 읽어오지 못해 해당 파일 로드하게 작업
